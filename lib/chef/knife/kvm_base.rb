@@ -97,7 +97,6 @@ class Chef
             if print_progress
               print "\rProgress: #{(sent.to_f * 100 / total.to_f).to_i}% completed"
             end
-          end
         end
         puts if print_progress
       end
