@@ -254,7 +254,7 @@ class Chef
 
       option :dst_dir,
         :long => "--dst-dir FILE",
-        :description => "Destination folder for image"
+        :description => "Destination folder for image",
         :default => "/var/lib/libvirt/images/"
         
 
