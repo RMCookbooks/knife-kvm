@@ -324,7 +324,7 @@ class Chef
           exit 1
         end
         
-        if not File.exist?(config[:vm_disk])
+        if config[:upload] && not File.exist?(config[:vm_disk])
           ui.error("Invalid QCOW2 disk file (--vm-disk)")
           exit 1
         end
