@@ -258,6 +258,13 @@ class Chef
         :default => "/var/lib/libvirt/images/"
         
 
+      option :first_boot_attributes,
+        :short => "-j JSON_ATTRIBS",
+        :long => "--json-attributes",
+        :description => "A JSON string to be added to the first run of chef-client",
+      :proc => lambda { |o| JSON.parse(o) },
+      :default => {}
+
       def tcp_test_ssh(hostname)
         tcp_socket = TCPSocket.new(hostname, 22)
         readable = IO.select([tcp_socket], nil, nil, 5)
