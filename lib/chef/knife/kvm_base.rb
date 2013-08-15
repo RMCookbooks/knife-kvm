@@ -92,13 +92,24 @@ class Chef
       end
 
       def copy_file(source, dest, print_progress = true)
-          puts "Copying file... (#{File.basename(source)})"
-          FileUtils.cp(source, dest) do |ch, name, sent, total|
-            if print_progress
-              print "\rProgress: #{(sent.to_f * 100 / total.to_f).to_i}% completed"
-            end
+        puts "Copying file #{source.inspect} to #{dest.inspect}..."
+        begin
+          Net::SSH.start(config[:kvm_host], config[:kvm_username], :password => config[:kvm_password]) do |ssh|
+            puts "In ssh block"
+            output = ssh.exec!("cp #{source} #{dest}")
+            puts "exec output: #{output.inspect}"
+          end
+          puts "outside ssh block"
+        rescue => detail
+          puts "Remote cp error: #{detail}"
+          print detail.backtrace.join("\n")
+          #   FileUtils.cp(source, dest) do |ch, name, sent, total|
+          #     if print_progress
+          #       print "\rProgress: #{(sent.to_f * 100 / total.to_f).to_i}% completed"
+          #     end
         end
-        puts if print_progress
+        puts "After cp rescue block"
+        # puts if print_progress
       end
 
 
