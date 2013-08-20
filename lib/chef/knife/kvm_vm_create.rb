@@ -258,9 +258,9 @@ class Chef
         :default => "/var/lib/libvirt/images"
         
 
-      option :first_boot_attributes,
+      option :json_attributes,
         :short => "-j JSON_ATTRIBS",
-        :long => "--json-attributes",
+        :long => "--json_attributes",
         :description => "A JSON string to be added to the first run of chef-client",
       :proc => lambda { |o| JSON.parse(o) },
       :default => {}
@@ -420,6 +420,7 @@ class Chef
         bootstrap.config[:environment] = config[:environment]
         bootstrap.config[:no_host_key_verify] = config[:no_host_key_verify]
         bootstrap.config[:ssh_password] = config[:ssh_password]
+        bootstrap.config[:first_boot_attributes] = locate_config_value(:json_attributes) || {}
         bootstrap
       end
 
