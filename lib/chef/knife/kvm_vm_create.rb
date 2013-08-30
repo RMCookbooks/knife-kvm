@@ -371,8 +371,8 @@ class Chef
 
         # wait for it to be ready to do stuff
         print "\n#{ui.color("Waiting server... ", :magenta)}"
-        sleep 70
         found = connection.servers.all.find { |v| v.name == vm.name }
+        timeout = 100
         loop do 
           begin
             if not vm.public_ip_address.nil? and not vm.public_ip_address.empty?
