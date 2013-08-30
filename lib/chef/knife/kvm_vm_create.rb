@@ -371,9 +371,9 @@ class Chef
 
         # wait for it to be ready to do stuff
         print "\n#{ui.color("Waiting server... ", :magenta)}"
-        found = connection.servers.all.find { |v| v.name == vm.name }
-        timeout = 100
+        tries = 100
         loop do 
+          connection.servers.all.find { |v| v.name == vm.name }
           begin
             if not vm.public_ip_address.nil? and not vm.public_ip_address.empty?
               puts
@@ -381,15 +381,13 @@ class Chef
               break
             end
           rescue Fog::Errors::Error
-            print "\r#{ui.color('Waiting a valid IP', :magenta)}..." + "." * (100 - timeout)
+            print "\r#{ui.color('Waiting a valid IP', :magenta)}..." + "." * (100 - tries)
           end
-          timeout -= 1
-          if timeout == 0
+          tries -= 1
+          if tries == 0
             ui.error "Timeout trying to reach the VM. Couldn't find the IP address."
             exit 1
           end
-          sleep 1
-          found = connection.servers.all.find { |v| v.name == vm.name }
         end
 
         print "\n#{ui.color("Waiting for sshd... ", :magenta)}"

@@ -95,11 +95,8 @@ class Chef
         puts "Copying file #{source.inspect} to #{dest.inspect}..."
         begin
           Net::SSH.start(config[:kvm_host], config[:kvm_username], :password => config[:kvm_password]) do |ssh|
-            puts "In ssh block"
-            output = ssh.exec!("cp #{source} #{dest}")
-            puts "exec output: #{output.inspect}"
+            ssh.exec!("cp #{source} #{dest}")
           end
-          puts "outside ssh block"
         rescue => detail
           puts "Remote cp error: #{detail}"
           print detail.backtrace.join("\n")
@@ -108,8 +105,6 @@ class Chef
           #       print "\rProgress: #{(sent.to_f * 100 / total.to_f).to_i}% completed"
           #     end
         end
-        puts "After cp rescue block"
-        # puts if print_progress
       end
 
 
