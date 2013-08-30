@@ -371,7 +371,7 @@ class Chef
 
         # wait for it to be ready to do stuff
         print "\n#{ui.color("Waiting server... ", :magenta)}"
-        tries = 100
+        tries = 25
         loop do 
           connection.servers.all.find { |v| v.name == vm.name }
           begin
@@ -381,7 +381,7 @@ class Chef
               break
             end
           rescue Fog::Errors::Error
-            print "\r#{ui.color('Waiting a valid IP', :magenta)}..." + "." * (100 - tries)
+            print "\r#{ui.color('Waiting a valid IP', :magenta)}..." + "." * (25 - tries)
           end
           tries -= 1
           if tries == 0
