@@ -163,6 +163,16 @@ class Chef
         :long => "--vm-memory MEM",
         :default => "512",
         :description => "The VM memory in MB (default: 512)"
+      
+      option :cpus,
+        :long => "--vm-cpus CPU",
+        :default => "1",
+        :description => "Number of VM cpus (default: 1)"
+
+      option :vol_size,
+        :long => "--vm-vol-size VOL",
+        :default => "10G",
+        :description => "The VM Disk Size in GB (default: 10G)"
 
       option :chef_node_name,
         :short => "-N NAME",
@@ -337,6 +347,8 @@ class Chef
 
         pool = config[:pool]
         memory = config[:memory]
+        num_cpus = config[:cpus]
+        vol_size = config[:vol_size]
         vm_disk = config[:vm_disk]
         os_type =config[:os_type]
         destination_path = config[:dst_dir]   #"/var/lib/libvirt/images/"
@@ -345,8 +357,9 @@ class Chef
         puts "#{ui.color("Creating VM... ", :magenta)}"
         net_type, net_if = config[:network_interface].split(':')
         vm = connection.servers.create :name => vm_name,
+                          :cpus => num_cpus,
                           :volume_allocation => "#{File.size(vm_disk)/1024/1024}M",
-                          :volume_capacity => '10G',
+                          :volume_capacity => vol_size,
                           :volume_format_type => 'qcow2',
                           #:autostart => true, # Starting guest automatically
                           :volume_pool_name => pool,
