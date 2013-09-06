@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "celluloid", ">= 0.9"
   s.add_dependency "popen4"
   s.add_dependency "terminal-table"
-  s.add_dependency "alchemist"
+  s.add_dependency "alchemist", "= 0.1.5"
   s.add_dependency "chef", ">= 0.10"
   s.add_development_dependency('rake')
   s.require_paths = ["lib"]
