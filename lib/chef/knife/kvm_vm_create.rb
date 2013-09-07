@@ -249,6 +249,16 @@ class Chef
         :long => "--network-interface type:name",
         :description => "The network interface description (default bridge:br0)",
         :default => "bridge:br0"
+
+      option :network_interface_2,
+        :long => "--network-interface-2 type:name",
+        :description => "The network interface_2 description (default bridge:br0)",
+        :default => "bridge:br0"
+
+      option :nics,
+        :long => "--num-nics 1",
+        :description => "Number of network interfaces - max 2 (default 1)",
+        :default => "1"
       
       option :batch,
         :long => "--batch script.yml",
@@ -356,18 +366,40 @@ class Chef
         #connection.remote_command "mkdir #{destination_path}"
         puts "#{ui.color("Creating VM... ", :magenta)}"
         net_type, net_if = config[:network_interface].split(':')
+        net_type2, net_if2 = config[:network_interface_2].split(':')
+
+        if config[:nics] == "1"
         vm = connection.servers.create :name => vm_name,
                           :cpus => num_cpus,
                           :volume_allocation => "#{File.size(vm_disk)/1024/1024}M",
                           :volume_capacity => vol_size,
                           :volume_format_type => 'qcow2',
-                          #:autostart => true, # Starting guest automatically
                           :volume_pool_name => pool,
                           :network_interface_type => net_type,
-                          :memory_size => memory.to_i * 1024,
-                          :network_bridge_name => net_if
+                          :network_bridge_name => net_if,
+                          :memory_size => memory.to_i * 1024
+
+            else
+        vm = connection.servers.create :name => vm_name,
+                          :cpus => num_cpus,
+                          :volume_allocation => "#{File.size(vm_disk)/1024/1024}M",
+                          :volume_capacity => vol_size,
+                          :volume_format_type => 'qcow2',
+                          :volume_pool_name => pool,
+                          :network_interface_type => net_type,
+                          :network_bridge_name => net_if,
+                          :nics =>
+                          [{:type => "#{net_type}",
+                          :bridge => "#{net_if}"},
+                          {:type => "#{net_type2}",
+                          :bridge => "#{net_if2}"}],
+                          :memory_size => memory.to_i * 1024
+        end
+
+
 
         puts "#{ui.color("Importing VM disk... ", :magenta)}"
+
         
         if not config[:upload]
            copy_file(vm_disk, "#{destination_path}/#{vm_name}.qcow2")

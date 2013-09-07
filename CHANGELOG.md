@@ -1,4 +1,4 @@
-# 0.2 - UNRELEASED
+# 0.4 - UNRELEASED
 
 * Added --batch and --async options 
 
