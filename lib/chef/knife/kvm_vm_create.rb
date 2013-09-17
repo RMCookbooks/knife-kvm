@@ -442,7 +442,6 @@ class Chef
 
         puts "\n"
         puts "#{ui.color("Name", :cyan)}: #{vm.name}"
-        puts "#{ui.color("IP Address", :cyan)}: #{vm.public_ip_address}"
         puts "#{ui.color("Environment", :cyan)}: #{config[:environment] || '_default'}"
         puts "#{ui.color("Run List", :cyan)}: #{config[:run_list].join(', ')}"
         puts "#{ui.color("Done!", :green)}"
