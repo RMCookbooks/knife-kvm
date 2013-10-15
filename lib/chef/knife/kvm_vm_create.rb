@@ -85,7 +85,7 @@ class Chef
         if @name.nil? or @name.empty?
           raise Exception.new("Invalid job name")
         end
-        if not @options['vm-disk'] or !File.exist?(@options['vm-disk'])
+        if not @options['vm-disk'] #or !File.exist?(@options['vm-disk'])
           raise Exception.new("Invalid VM disk for job #{@name}.")
         end
       end
