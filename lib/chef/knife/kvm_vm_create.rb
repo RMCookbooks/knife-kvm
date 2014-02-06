@@ -171,8 +171,8 @@ class Chef
 
       option :vol_size,
         :long => "--vm-vol-size VOL",
-        :default => "10G",
-        :description => "The VM Disk Size in GB (default: 10G)"
+        :default => "16G",
+        :description => "The VM Disk Size in GB (default: 16G)"
 
       option :chef_node_name,
         :short => "-N NAME",
@@ -402,7 +402,7 @@ class Chef
 
         
         if not config[:upload]
-           copy_file(vm_disk, "#{destination_path}/#{vm_name}.qcow2")
+           copy_file(vm_disk, "#{destination_path}/#{vm_name}.qcow2", vol_size)
            vm.start
         else
            upload_file(vm_disk, "#{destination_path}/#{vm_name}.qcow2")
