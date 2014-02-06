@@ -171,8 +171,8 @@ class Chef
 
       option :vol_size,
         :long => "--vm-vol-size VOL",
-        :default => "10G",
-        :description => "The VM Disk Size in GB (default: 10G)"
+        :default => "16G",
+        :description => "The VM Disk Size in GB (default: 16G)"
 
       option :chef_node_name,
         :short => "-N NAME",
