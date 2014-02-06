@@ -402,7 +402,7 @@ class Chef
 
         
         if not config[:upload]
-           copy_file(vm_disk, "#{destination_path}/#{vm_name}.qcow2")
+           copy_file(vm_disk, "#{destination_path}/#{vm_name}.qcow2", vol_size)
            vm.start
         else
            upload_file(vm_disk, "#{destination_path}/#{vm_name}.qcow2")
