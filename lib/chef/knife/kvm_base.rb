@@ -96,7 +96,7 @@ class Chef
         begin
           Net::SSH.start(config[:kvm_host], config[:kvm_username], :password => config[:kvm_password]) do |ssh|
             ssh.exec!("cp #{source} #{dest}")
-            if vol_size != "16G"
+            if vol_size != "16G" or vol_size != "1024G" or vol_size != "2048G"
               additional_vol_size = (vol_size.gsub(/\D/, "")).to_i - 16
               print "#{vol_size} -- Adding #{additional_vol_size}G to #{dest.inspect} via qemu-img resize...\n"
               ssh.exec!("qemu-img resize #{dest} +#{additional_vol_size}G")
