@@ -91,12 +91,12 @@ class Chef
         puts if print_progress
       end
 
-      def copy_file(source, dest, vol_size, print_progress = true)
+      def copy_file(source, dest, vol_size, vm_disk_format, print_progress = true)
         puts "Copying file #{source.inspect} to #{dest.inspect}..."
         begin
           Net::SSH.start(config[:kvm_host], config[:kvm_username], :password => config[:kvm_password]) do |ssh|
             ssh.exec!("cp #{source} #{dest}")
-            if vol_size != "16G" and vol_size != "1024G" and vol_size != "2048G"
+            if vol_size != "16G" and vol_size != "1024G" and vol_size != "2048G" and vm_disk_format != "raw"
               additional_vol_size = (vol_size.gsub(/\D/, "")).to_i - 16
               print "#{vol_size} -- Adding #{additional_vol_size}G to #{dest.inspect} via qemu-img resize...\n"
               ssh.exec!("qemu-img resize #{dest} +#{additional_vol_size}G")
