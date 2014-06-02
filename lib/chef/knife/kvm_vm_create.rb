@@ -143,7 +143,12 @@ class Chef
 
       option :vm_disk,
         :long => "--vm-disk FILE",
-        :description => "The path to the QCOW2 disk file"
+        :description => "The path to the qcow2 or raw disk file"
+
+      option :vm_disk_format,
+        :long => "--vm-disk-format TYPE",
+        :default => "qcow2",
+        :description => "The VM Disk Format (default: qcow2)"
 
       option :vm_name,
         :long => "--vm-name NAME",
@@ -362,6 +367,7 @@ class Chef
         vm_disk = config[:vm_disk]
         os_type =config[:os_type]
         destination_path = config[:dst_dir]   #"/var/lib/libvirt/images/"
+        vm_disk_format = config[:vm_disk_format]
 
         #connection.remote_command "mkdir #{destination_path}"
         puts "#{ui.color("Creating VM... ", :magenta)}"
@@ -373,7 +379,7 @@ class Chef
                           :cpus => num_cpus,
                           :volume_allocation => "#{File.size(vm_disk)/1024/1024}M",
                           :volume_capacity => vol_size,
-                          :volume_format_type => 'qcow2',
+                          :volume_format_type => vm_disk_format,
                           :volume_pool_name => pool,
                           :network_interface_type => net_type,
                           :network_bridge_name => net_if,
@@ -384,7 +390,7 @@ class Chef
                           :cpus => num_cpus,
                           :volume_allocation => "#{File.size(vm_disk)/1024/1024}M",
                           :volume_capacity => vol_size,
-                          :volume_format_type => 'qcow2',
+                          :volume_format_type => vm_disk_format,
                           :volume_pool_name => pool,
                           :network_interface_type => net_type,
                           :network_bridge_name => net_if,
@@ -402,10 +408,10 @@ class Chef
 
         
         if not config[:upload]
-           copy_file(vm_disk, "#{destination_path}/#{vm_name}.qcow2", vol_size)
+           copy_file(vm_disk, "#{destination_path}/#{vm_name}.#{vm_disk_format}", vol_size, vm_disk_format)
            vm.start
         else
-           upload_file(vm_disk, "#{destination_path}/#{vm_name}.qcow2")
+           upload_file(vm_disk, "#{destination_path}/#{vm_name}.#{vm_disk_format}")
            vm.start
         end
         
