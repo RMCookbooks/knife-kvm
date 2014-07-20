@@ -282,6 +282,10 @@ class Chef
         :description => "Destination folder for image",
         :default => "/var/lib/libvirt/images"
         
+      option :secret_file,
+        :long => "--secret-file SECRET_FILE",
+        :description => "A file containing the secret key to use to encrypt data bag item values",
+        :proc => Proc.new { |sf| Chef::Config[:knife][:secret_file] = sf }
 
       option :json_attributes,
         :short => "-j JSON_ATTRIBS",
